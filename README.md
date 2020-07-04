@@ -81,7 +81,7 @@ OTP 應用有 slot 1 / slot 2 兩組設定，短按 YubiKey 會輸出 slot 1，�
 每一個 slot 都可以設定怎麼產生隨機碼，有以下的幾種規則
 
 - Yubico OTP：slot 1 出廠預設，常用在二階段認證。長度為 44 個字母，前 12 個字母代表該 YubiKey，所以是固定的；後 32 個字母則是每次都不同。
-- OATH-HOTP：常用在二階段認證。以 RFC 4226 定義的的演算法，產生的 6 碼數字。OATH-HOTP 晚點會再出現，這裡看不懂請再往下看。
+- OATH-HOTP：常用在二階段認證。以 RFC 4226 定義的的演算法，產生的 6 位數字。OATH-HOTP 晚點會再出現，這裡看不懂請再往下看。
 - Static Password：就是一組密碼，基本上就是把密碼存在硬體 security key 裡面。因為是固定的，所以不會用在二階段驗證。
   - 此設定就是一般的密碼輸入，非二階段認證。
   
@@ -110,8 +110,8 @@ TODO: 圖
 ## OATH HOTP/TOTP
 
 簡單理解的話，
-- Time-based OTP / TOTP：每三十秒，就會產生一個不同的 6 碼數字。
-- HMAC-based OTP / HOTP：每次產生，都會產生一組不同的 6 碼數字。
+- Time-based OTP / TOTP：每三十秒，就會產生一組不同的 6 位數字。
+- HMAC-based OTP / HOTP：每次產生，都會產生一組不同的 6 位數字。
 
 這裡的 HOTP 跟「OTP 應用」的 OATH-HOTP 原理是一樣的，每次產生都會不同。
 
