@@ -16,8 +16,9 @@ YubiKey 支援的功能非常多，本文主要專注在入門的應用，包含
 - 想要從簡訊二階段認證遷移到 
   - Authenticator app 或者
   - 硬體 security key (YubiKey)
+- 設定/啟用/停用 YubiKey 各種功能
 
-另外還會提到一點點備份相關的事。
+另外還會提到一點點備份的事。
 
 本文尚未包含進階應用：(maybe TODO)
 
@@ -139,6 +140,8 @@ OATH 有 25 個 slots，所以至多可以存 25 個二階段驗證，在越來�
 - 停用特定介面的特定應用，例如我個人把 OTP 應用在所有介面都停用，避免誤觸而產生一堆無用字串。
 - 啟用/停用 OTP 應用各個 slot。
 - 設定 OTP 應用內的 OATH-MOTP 或者 static password 的內容。
+
+有一些進階功能在 GUI 上面無法設定，可以使用 `ykman` 這個 CLI
 
 # 備份
 
