@@ -15,22 +15,20 @@ YubiKey 支援的功能非常多，本文主要專注在入門的應用，包含
   - Authenticator app 或者
   - 硬體 security key (YubiKey)
 
-另外還會提到一點點備份相關的事，以及對一些 app 的抱怨。
+另外還會提到一點點備份相關的事。
 
-本文尚未包含進階應用：(TODO)
+本文尚未包含進階應用：(maybe TODO)
 
 - [ ] Smart Card
 - [ ] OpenPGP
 
 # 二階段驗證 / 2-Factor Authentication (2FA) / Multi-Factor Authentication (MFA)
 
-指除了帳號密碼的驗證方式外，額外的認證方式。常見的有
+指除了帳號密碼的驗證方式外，額外的驗證方式。常見的有（以安全性弱 -> 強排列）
 
-- 簡訊收取一串數字，常見 4-6 碼。
+- 簡訊收取一串數字，常見 4-6 碼。安全性最弱，簡訊已被證實可以輕易攔截。
 - Authenticator app 產生一串數字，常見為 6 碼。例如 Google Authenticator / Lastpass Authenticator / Yubico Authenticator。
 - 硬體 security key 驗證。例如 YubiKey。有非常多種協定。
-
-詳情可以 Google。
 
 # 應用協定 v.s. 介面
 
@@ -126,11 +124,31 @@ TODO: 圖
 
 ### 限制
 
-OATH 有 25 個 slots，所以至多可以存 25 個二階段驗證
+OATH 有 25 個 slots，所以至多可以存 25 個二階段驗證，在越來越多網站支援二階段驗證的時代，25 組通常不是很都用。
 
 # 備份
 
-一個常見問題就是要怎麽備份 YubiKey：**YubiKey 沒辦法備份。**請把它當作車鑰匙/家門鑰匙來對待
+一個常見問題就是要怎麽備份 YubiKey：**YubiKey 沒辦法備份。**請把它當作車鑰匙/家門鑰匙來對待，所以你怎麼備份車鑰匙，就怎麼備份 YubiKey。
+
+我目前的方式就是買 2 把 YubiKey，所有二階段驗證的網站都要註冊 2 把，無論是 FIDO U2F 或者是 OATH。
+
+## FIDO U2F
+
+FIDO U2F 要看該網站是否支援多組 security key，Google, Facebook, Dropbox, GitHub 都有支援；目前唯一發現只支援一把 security key 的網站是 Twitter。
+
+## OATH
+
+OATH（也就是掃 QR code 來設定）則可以輕鬆設定多組，
+
+1. 當網站提示掃描 QR code 時
+2. 打開 Yubico Authenticator
+3. 刷 YubiKey
+4. 掃 QR code
+5. 換一個 YubiKey 重複步驟 2-4
+6. 回到網站輸入一次 5 位數字完成設定。
+
+
+
 
 
 
