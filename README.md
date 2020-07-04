@@ -72,7 +72,7 @@ YubiKey 上的應用協定大致有六種，分別是 OTP, FIDO U2F, FIDO2, OATH
 
 ### 使用情境
 
-登入時，輸入帳號密碼後，會再出入一組輸入框，要求使用者插入並按下 security key 後，產生一次性的密碼。
+登入時，輸入帳號密碼後，應用程式或瀏覽器會再出現一組輸入框，要求使用者插入並按下 security key 後，產生一次性的密碼。
 
 ### 設定
 
@@ -89,23 +89,23 @@ OTP 應用有 slot 1 / slot 2 兩組設定，短按 YubiKey 會輸出 slot 1，�
 
 ### 限制
 
-只有兩個 slots。如果是工作使用可能還行，例如就只用來登入 AWS；個人使用的話，OATH（想見下文）比較夠用。
+只有兩個 slots。如果是工作使用可能還行，例如就只用來登入 AWS；個人使用的話，OATH（詳見下文）比較夠用。
 
 ## FIDO U2F
 
 ### 使用情境
 
-登入時，使用帳號密碼後，應用程式或瀏覽器會提示使用者插入並按下 security key。與 OTP 應用的差別在 YubiKey 此時並非一個虛擬鍵盤，因此不會有輸入框。
+登入時，輸入帳號密碼後，應用程式或瀏覽器會提示使用者插入並按下 security key。與 OTP 應用的差別在 YubiKey 此時並非一個虛擬鍵盤，因此不會有輸入框。
 
 TODO: 圖
 
 ### 設定
 
-在要使用的網站要先註冊 YubiKey，通常在 Security > 2FA > security key 地下設定，通常可以設定多組。常見網路服務都有支援，例如 Google，Facebook，Twitter，Dropbox，GitHub。
+在要使用的網站要先註冊 YubiKey，通常在 Security > 2FA > security key 設定，通常可以設定多組。常見網路服務都有支援，例如 Google，Facebook，Twitter，Dropbox，GitHub。
 
 ## FIDO2
 
-柏拉圖式的登入，會儲存登入所需的所有資訊在 YubiKey 上，所以可以實現真正的無密碼驗證。目前有支援的服務及少，Microsoft Azure 似乎有支援。支援的服務少到連 [YubiKey 的 catalog](https://www.yubico.com/works-with-yubikey/catalog/) 上似乎都是錯的，例如 Google Account 有出現在名單上，但我遍尋不著怎麼啟用。
+柏拉圖式的登入，會儲存登入所需的所有資訊在 YubiKey 上，所以可以實現真正的無密碼驗證。目前有支援的服務極少，Microsoft Azure 似乎有支援。支援的服務少到連 [YubiKey 的 catalog](https://www.yubico.com/works-with-yubikey/catalog/) 上似乎都是錯的，例如 Google Account 有出現在名單上，但我遍尋不著怎麼啟用。
 
 ## OATH HOTP/TOTP
 
@@ -115,35 +115,35 @@ TODO: 圖
 
 這裡的 HOTP 跟「OTP 應用」的 OATH-HOTP 原理是一樣的，每次產生都會不同。
 
-特別且重要的是，**OATH 只能透過 CCID channel 讀取，目前就是用 Yubico Authenticator 來讀。這個軟體在主要平台和手機上都有。**
+特別重要的是，**OATH 只能透過 CCID channel 讀取，目前就是用 Yubico Authenticator 來讀。這個軟體在主要平台和手機上都有。**
 
 ### 使用情境
 
-登入時，輸入完帳號密碼後，會再出現一個輸入框，要求使用者輸入一組 6 位數字。使用者在 Yubico Authenticator，連結 YubiKey 後，產生一組 6 碼數字並填入原網站以登入。
+登入時，輸入帳號密碼後，應用程式或瀏覽器會再出現一個輸入框，要求使用者輸入一組 6 位數字。使用者使用 Yubico Authenticator 讀取 YubiKey 後，在欲登入網站填入 Yubico Authenticator 顯示的 5 位數字以登入。
+
+有趣的是，在這過程中，Yubico Authenticator 只負責提供時間給 YubiKey (TOTP)，接著顯示 YubiKey 回傳的值，Yubico Authenticator 本身不負責運算/儲存。所以如果手機掉了，別的手機還是可以讀 YubiKey。
 
 ### 設定
 
 在要使用的網站，Security > 2FA > Authenticator app，通常會出現一個 QR code。接著打開 Yubico Authenticator，選擇新增，連結 YubiKey 後，用相機掃 QR code。如果不是使用手機的話，也可以手動輸入一組 code 到 Yubico Authenticator 中。
 
-有趣的是，在這過程中，Yubico Authenticator 只負責提供時間給 YubiKey (TOTP)，然後顯示 Yubikey 回傳的值，Yubico Authenticator 本身不負責運算/儲存。所以如果手機掉了，別的手機還是可以讀 YubiKey。
+這個過程是透過 Yubico Authenticator 寫入 YubiKey 的 OATH slot，Yubico Authenticator 本身並不儲存資訊。
 
 ### 限制
 
-OATH 有 25 個 slots，所以至多可以存 25 個二階段驗證，在越來越多網站支援二階段驗證的時代，25 組通常不是很都用。
-
-# 
+OATH 有 25 個 slots，至多可以存 25 個二階段驗證，在越來越多網站支援二階段驗證的時代，25 組通常不是很都用。
 
 # YubiKey Manager
 
 [下載連結](https://support.yubico.com/support/solutions/articles/15000014219-yubikey-5-series-technical-manual#YubiKey_Manager38ncjm)
 
-這個軟體可以設定
+這個軟體可以設定 YubiKey
 
 - 停用特定介面的特定應用，例如我個人把 OTP 應用在所有介面都停用，避免誤觸而產生一堆無用字串。
 - 啟用/停用 OTP 應用各個 slot。
 - 設定 OTP 應用內的 OATH-MOTP 或者 static password 的內容。
 
-有一些進階功能在 GUI 上面無法設定，可以使用 `ykman` 這個 CLI
+有些進階功能在 GUI 上面無法設定，可以使用 `ykman` 這個 CLI。
 
 # 備份
 
@@ -153,11 +153,11 @@ OATH 有 25 個 slots，所以至多可以存 25 個二階段驗證，在越來�
 
 ## FIDO U2F
 
-FIDO U2F 要看該網站是否支援多組 security key，Google, Facebook, Dropbox, GitHub 都有支援；目前唯一發現只支援一把 security key 的網站是 Twitter。
+取決於該網站是否支援多組 security keys。Google, Facebook, Dropbox, GitHub 都有支援；目前唯一發現只支援一把 security key 的網站是 Twitter。
 
 ## OATH
 
-OATH（也就是掃 QR code 來設定）則可以輕鬆設定多組，
+OATH（也就是掃 QR code 來設定）則可以輕鬆設定多組：
 
 1. 當網站提示掃描 QR code 時
 2. 打開 Yubico Authenticator
