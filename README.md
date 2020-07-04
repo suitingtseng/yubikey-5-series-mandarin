@@ -1,8 +1,8 @@
 # YubiKey 5 Series 指南
 
-網路上有很多英文的指南，Mandarin 的則只有商家的介紹，既然都花時間研究了就順便記錄下來。
+網路上有許多 YubiKey 的英文指南，Mandarin 的則只有販賣商家的介紹，因此既然都花時間研究了就順便記錄下來。錯誤/建議/修正請送 PR，謝謝。
 
-YubiKey 有很多產品線，也有很多功能，本文主要是介紹 YubiKey 5 Series 支援的各種應用。
+YubiKey 有很多產品線，也有很多功能，本文主要是介紹 YubiKey 5 Series 支援的各種應用協定和介面。
 
 本文絕大部分來自[這裡](https://support.yubico.com/support/solutions/articles/15000014219-yubikey-5-series-technical-manual#FIDO_U2Fkw7ef)，原文寫得很好，有興趣也可以參閱。
 
@@ -10,15 +10,17 @@ YubiKey 有很多產品線，也有很多功能，本文主要是介紹 YubiKey 
 
 YubiKey 支援的功能非常多，本文主要專注在入門的應用，包含：
 
-- 想要設定二階段認證
-- 或者想要從簡訊二階段認證遷移到 
+- 設定二階段認證
+- 想要從簡訊二階段認證遷移到 
   - Authenticator app 或者
-  - Security key
+  - 硬體 security key (YubiKey)
 
-本文尚未包含進階應用：
+另外還會提到一點點備份相關的事，以及對一些 app 的抱怨。
 
-- Smart Card
-- OpenPGP
+本文尚未包含進階應用：(TODO)
+
+- [ ] Smart Card
+- [ ] OpenPGP
 
 # 二階段驗證 / 2-Factor Authentication (2FA) / Multi-Factor Authentication (MFA)
 
@@ -32,25 +34,34 @@ YubiKey 支援的功能非常多，本文主要專注在入門的應用，包含
 
 # 應用協定 v.s. 介面
 
-YubiKey 其中一個讓人混淆的就是有很多不同的應用協定，也有很多的介面。
+YubiKey 其中一個讓人混淆的，是有很多應用協定，也有很多的介面。
 
-- 介面：USB-A，USB-C，Lightning，NFC
-- 應用協定：OTP，OATH-OTP，FIDO U2F，FIDO2
+- 介面：USB-A，USB-C，Lightning，NFC。
+- 應用協定：OTP，OATH-OTP，FIDO U2F，FIDO2，以及其他。
 
-這兩者是正交的（orthogonal），也就是說以下都是合理的使用情境
+這兩者是正交的（orthogonal），也就是說以下都是合理的使用情境：
 
 - 透過 USB-C 使用 FIDO U2F
 - 透過 Lighting 使用 FIDO U2F
 - 透過 Lighting 使用 OTP
 
-但並不是所有的排列組合都是存在的，例如「OTP 應用」<sup>*1</sup>就無法透過 NFC 使用。
+但並不是所有的排列組合都是存在的，例如「OTP 應用」<sup>*1</sup> 就無法透過 NFC 使用。
 
 *1 「OTP 應用」：詳細定義請見下文。
 
+# 介面
+
+| 產品 \ 支援介面 | USB-A | USB-C | Lightning | NFC |
+|:-------------:|:-----:|:-----:|:---------:|:---:|
+| 5 NFC         | ✓     |       |           | ✓   |
+| 5 Nano        | ✓     |       |           |     |
+| 5C            |       | ✓     |           |     |
+| 5Ci           |       | ✓     | ✓         |     |
+| 5C Nano       |       | ✓     |           |     |
 
 # 應用協定 / Application
 
-Yubikey 上的應用協定大致有六種，分別是 OTP, FIDO/U2F, FIDO2, OATH, Smart Card, OpenPGP，但其實有些功能性有重疊。
+YubiKey 上的應用協定大致有六種，分別是 OTP, FIDO U2F, FIDO2, OATH, Smart Card, OpenPGP。
 
 ## OTP / One-time-password 應用
 
@@ -58,28 +69,30 @@ Yubikey 上的應用協定大致有六種，分別是 OTP, FIDO/U2F, FIDO2, OATH
 
 ### 使用情境
 
-登入時，輸入完帳號密碼後，會在出入一組輸入框，要求使用者插入並按下 security key 後，產生一次性的密碼。
+登入時，輸入帳號密碼後，會在出入一組輸入框，要求使用者插入並按下 security key 後，產生一次性的密碼。
 
 ### 設定
 
-OTP 應用有 slot 1 / slot 2 兩組設定，短按 YubiKey 會輸出 slot 1，長按則啊輸出 slot 2。出廠時，slot 1 是被設定好的（詳細如下），slot 2 則是空的。
+OTP 應用有 slot 1 / slot 2 兩組設定，短按 YubiKey 會輸出 slot 1，長按則輸出 slot 2。出廠時，slot 1 是被設定好的（詳細如下），slot 2 則是空的。
 
 每一個 slot 都可以設定怎麼產生隨機碼，有以下的幾種規則
 
 - Yubico OTP：slot 1 出廠預設，常用在二階段認證。長度為 44 個字母，前 12 個字母代表該 YubiKey，所以是固定的；後 32 個字母則是每次都不同。
 - OATH-HOTP：常用在二階段認證。以 RFC 4226 定義的的演算法，產生的 6 碼數字。OATH-HOTP 晚點會再出現，這裡看不懂請再往下看。
 - Static Password：就是一組密碼，基本上就是把密碼存在硬體 security key 裡面。因為是固定的，所以不會用在二階段驗證。
-  - 這個的使用情境就是一般的密碼輸入，非二階段認證。
+  - 此設定就是一般的密碼輸入，非二階段認證。
+  
+設定 OTP 應用的各個 slot 需透過 [YubiKey Manager](https://support.yubico.com/support/solutions/articles/15000014219-yubikey-5-series-technical-manual#YubiKey_Manager38ncjm)，各大桌面平台都有 GUI app，有些也有 CLI。
 
 ### 限制
 
-只有兩個 slots。
+只有兩個 slots。如果是工作使用可能還行，例如就只用來登入 AWS；個人使用的話，OATH（想見下文）比較夠用。
 
 ## FIDO U2F
 
 ### 使用情境
 
-登入時，使用完帳號密碼後，應用程式或瀏覽器會提示使用者插入並按下 security key。與 OTP 應用的差別在 YubiKey 此時並非一個虛擬鍵盤，因此不會有輸入框。
+登入時，使用帳號密碼後，應用程式或瀏覽器會提示使用者插入並按下 security key。與 OTP 應用的差別在 YubiKey 此時並非一個虛擬鍵盤，因此不會有輸入框。
 
 TODO: 圖
 
@@ -87,42 +100,37 @@ TODO: 圖
 
 在要使用的網站要先註冊 YubiKey，通常在 Security > 2FA > security key 地下設定，通常可以設定多組。常見網路服務都有支援，例如 Google，Facebook，Twitter，Dropbox，GitHub。
 
-TODO: 圖
-
 ## FIDO2
 
 柏拉圖式的登入，會儲存登入所需的所有資訊在 YubiKey 上，所以可以實現真正的無密碼驗證。目前有支援的服務及少，Microsoft Azure 似乎有支援。支援的服務少到連 [YubiKey 的 catalog](https://www.yubico.com/works-with-yubikey/catalog/) 上似乎都是錯的，例如 Google Account 有出現在名單上，但我遍尋不著怎麼啟用。
 
-## OATH-HOTP
-
-HOTP 是指 HMAC-based OTP， 與之相對的是 Time-based OTP。
+## OATH HOTP/TOTP
 
 簡單理解的話，
-- Time-based OTP：每三十秒，就會產生一個不同的 6 碼數字。
-- HMAC-based OTP：每次產生（例如按下 YubiKey），都會產生一組不同的 6 碼數字。
+- Time-based OTP / TOTP：每三十秒，就會產生一個不同的 6 碼數字。
+- HMAC-based OTP / HOTP：每次產生，都會產生一組不同的 6 碼數字。
 
-TODO
+這裡的 HOTP 跟「OTP 應用」的 OATH-HOTP 原理是一樣的，每次產生都會不同。
+
+特別且重要的是，**OATH 只能透過 CCID channel 讀取，目前就是用 Yubico Authenticator 來讀。這個軟體在主要平台和手機上都有。**
 
 ### 使用情境
 
-登入時，輸入完帳號密碼後，會在出入一組輸入框，要求使用者插入並按下 security key 後，產生一次性的密碼。這組碼通常為 6 個數字。
+登入時，輸入完帳號密碼後，會再出現一個輸入框，要求使用者輸入一組 6 位數字。使用者在 Yubico Authenticator，連結 YubiKey 後，產生一組 6 碼數字並填入原網站以登入。
 
+### 設定
 
+在要使用的網站，Security > 2FA > Authenticator app，通常會出現一個 QR code。接著打開 Yubico Authenticator，選擇新增，連結 YubiKey 後，用相機掃 QR code。如果不是使用手機的話，也可以手動輸入一組 code 到 Yubico Authenticator 中。
 
+有趣的是，在這過程中，Yubico Authenticator 只負責提供時間給 YubiKey (TOTP)，然後顯示 Yubikey 回傳的值，Yubico Authenticator 本身不負責運算/儲存。所以如果手機掉了，別的手機還是可以讀 YubiKey。
 
+### 限制
 
+OATH 有 25 個 slots，所以至多可以存 25 個二階段驗證
 
+# 備份
 
-| 應用協定 \ 介面 | USB-A | NFC |
-|:-------------:|:-----:|:---:|
-| OTP           | Y     | N   |
-| FIDO/U2F      | Y     | Y   |
-| FIDO2         | Y     | Y   |
-| OATH          | N     | Y   |
-| Smart Card    | ?     | ?   |
-| OpenPGP       | ?     | ?   |
-
-
+一個常見問題就是要怎麽備份 YubiKey：**YubiKey 沒辦法備份。**請把它當作車鑰匙/家門鑰匙來對待
 
 
 
