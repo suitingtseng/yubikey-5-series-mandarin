@@ -1,10 +1,12 @@
 # YubiKey 5 Series 指南
 
-網路上有許多 YubiKey 的英文指南，Mandarin 的則只有販賣商家的介紹，因此既然都花時間研究了就順便記錄下來。錯誤/建議/修正請送 PR，謝謝。
+網路上有許多 YubiKey 的英文指南，Mandarin 的則只有販賣商家的介紹，因此既然都花時間研究了就順便記錄下來。
+
+錯誤/建議/修正請送 PR，謝謝。
 
 YubiKey 有很多產品線，也有很多功能，本文主要是介紹 YubiKey 5 Series 支援的各種應用協定和介面。
 
-本文絕大部分來自[這裡](https://support.yubico.com/support/solutions/articles/15000014219-yubikey-5-series-technical-manual#FIDO_U2Fkw7ef)，原文寫得很好，有興趣也可以參閱。
+本文絕大部分來自[這裡](https://support.yubico.com/support/solutions/articles/15000014219-yubikey-5-series-technical-manual#FIDO_U2Fkw7ef)，原文很豐富完整，有興趣也可以參閱。
 
 ## 目標讀者
 
