@@ -49,7 +49,7 @@ YubiKey 其中一個讓人混淆的，是有很多應用協定，也有很多的
 
 *1 「OTP 應用」：詳細定義請見下文。
 
-# 介面
+# 介面 / Interface
 
 | 產品 \ 支援介面 | USB-A | USB-C | Lightning | NFC |
 |:-------------:|:-----:|:-----:|:---------:|:---:|
@@ -128,6 +128,18 @@ TODO: 圖
 
 OATH 有 25 個 slots，所以至多可以存 25 個二階段驗證，在越來越多網站支援二階段驗證的時代，25 組通常不是很都用。
 
+# 
+
+# YubiKey Manager
+
+[下載連結](https://support.yubico.com/support/solutions/articles/15000014219-yubikey-5-series-technical-manual#YubiKey_Manager38ncjm)
+
+這個軟體可以設定
+
+- 停用特定介面的特定應用，例如我個人把 OTP 應用在所有介面都停用，避免誤觸而產生一堆無用字串。
+- 啟用/停用 OTP 應用各個 slot。
+- 設定 OTP 應用內的 OATH-MOTP 或者 static password 的內容。
+
 # 備份
 
 一個常見問題就是要怎麽備份 YubiKey：**YubiKey 沒辦法備份。** 請把它當作車鑰匙/家門鑰匙來對待，所以你怎麼備份車鑰匙，就怎麼備份 YubiKey。
@@ -147,12 +159,7 @@ OATH（也就是掃 QR code 來設定）則可以輕鬆設定多組，
 3. 刷 YubiKey
 4. 掃 QR code
 5. 換一個 YubiKey 重複步驟 2-4
-6. 回到網站輸入一次 5 位數字完成設定。
-
-
-
-
-
+6. 回到網站輸入一次 6 位數字完成設定。
 
 
 # 參考資料
