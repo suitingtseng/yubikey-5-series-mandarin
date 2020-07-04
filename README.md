@@ -37,7 +37,16 @@ YubiKey 其中一個讓人混淆的就是有很多不同的應用協定，也有
 - 介面：USB-A，USB-C，Lightning，NFC
 - 應用協定：OTP，OATH-OTP，FIDO U2F，FIDO2
 
-這兩者是
+這兩者是正交的（orthogonal），也就是說以下都是合理的使用情境
+
+- 透過 USB-C 使用 FIDO U2F
+- 透過 Lighting 使用 FIDO U2F
+- 透過 Lighting 使用 OTP
+
+但並不是所有的排列組合都是存在的，例如「OTP 應用」<sup>*1</sup>就無法透過 NFC 使用。
+
+*1 「OTP 應用」：詳細定義請見下文。
+
 
 # 應用協定 / Application
 
@@ -84,7 +93,19 @@ TODO: 圖
 
 柏拉圖式的登入，會儲存登入所需的所有資訊在 YubiKey 上，所以可以實現真正的無密碼驗證。目前有支援的服務及少，Microsoft Azure 似乎有支援。支援的服務少到連 [YubiKey 的 catalog](https://www.yubico.com/works-with-yubikey/catalog/) 上似乎都是錯的，例如 Google Account 有出現在名單上，但我遍尋不著怎麼啟用。
 
-# 介面
+## OATH-HOTP
+
+HOTP 是指 HMAC-based OTP， 與之相對的是 Time-based OTP。
+
+簡單理解的話，
+- Time-based OTP：每三十秒，就會產生一個不同的 6 碼數字。
+- HMAC-based OTP：每次產生（例如按下 YubiKey），都會產生一組不同的 6 碼數字。
+
+TODO
+
+### 使用情境
+
+登入時，輸入完帳號密碼後，會在出入一組輸入框，要求使用者插入並按下 security key 後，產生一次性的密碼。這組碼通常為 6 個數字。
 
 
 
