@@ -29,9 +29,11 @@ YubiKey 支援的功能非常多，本文主要專注在入門的應用，包含
 
 指除了帳號密碼的驗證方式外，額外的驗證方式。常見的有（以安全性弱 -> 強排列）
 
-- 簡訊收取一串數字，常見 4-6 碼。安全性最弱，簡訊已被證實可以輕易攔截。
-- Authenticator app 產生一串數字，常見為 6 碼。例如 Google Authenticator / Lastpass Authenticator / Yubico Authenticator。
+- 簡訊收取一串數字，常見 4-6 位數字。安全性最弱，簡訊已被證實可以輕易攔截。
+- Authenticator app 產生一串數字，常見為 6 位數字。例如 Google Authenticator / Lastpass Authenticator / Yubico Authenticator。由於是軟體產生，一般認為比硬體來的不安全。
 - 硬體 security key 驗證。例如 YubiKey。有非常多種協定。
+
+這裡有一個重要的概念，就是**安全性是定義在「最弱的那個連結」**：如果你在某服務有設定簡訊二階段，也有設定 YubiKey，那整體安全性是很弱的，因為攻擊的人只需要嘗試攔截你的簡訊，就可以成功登入系統。
 
 # 應用協定 v.s. 介面
 
