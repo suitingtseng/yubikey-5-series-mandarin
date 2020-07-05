@@ -166,6 +166,10 @@ OATH（也就是掃 QR code 來設定）則可以輕鬆設定多組：
 5. 換一個 YubiKey 重複步驟 2-4
 6. 回到網站輸入一次 6 位數字完成設定。
 
+# 抱怨區
+
+ - Twitter：只允許一組 security key。
+ - Twitch：不能用非 Authy 的 Authenticator，然後除了 Authy 外，就只有簡訊？？？？？？？？？？？
 
 # 參考資料
 
