@@ -1,8 +1,8 @@
 # YubiKey 5 Series 指南
 
-網路上有許多 YubiKey 的英文指南，Mandarin 的則只有販賣商家的介紹，因此既然都花時間研究了就順便記錄下來。
+網路上有許多 YubiKey 的英文指南，Mandarin 的則多為販賣商家的介紹，因此既然都花時間研究了就順便記錄下來。
 
-錯誤/建議/修正請送 PR，謝謝。
+錯誤/建議/修正請開 Issue 或送 PR，謝謝。
 
 YubiKey 有很多產品線，也有很多功能，本文主要是介紹 YubiKey 5 Series 支援的各種應用協定和介面。
 
@@ -13,6 +13,7 @@ YubiKey 有很多產品線，也有很多功能，本文主要是介紹 YubiKey 
 YubiKey 支援的功能非常多，本文主要專注在入門的應用，包含：
 
 - 設定二階段認證
+  - 了解各種不同二階段認證
 - 想要從簡訊二階段認證遷移到 
   - Authenticator app 或者
   - 硬體 security key (YubiKey)
@@ -34,6 +35,8 @@ YubiKey 支援的功能非常多，本文主要專注在入門的應用，包含
 - 硬體 security key 驗證。例如 YubiKey。有非常多種協定。
 
 這裡有一個重要的概念，就是**安全性是定義在「最弱的那個連結」**：如果你在某服務有設定簡訊二階段，也有設定 YubiKey，那整體安全性是很弱的，因為攻擊的人只需要嘗試攔截你的簡訊，就可以成功登入系統。
+
+在 2020 年，簡訊二階段驗證的攻擊已經實際可行，因此強烈建議遷移到別的方式。
 
 # 應用協定 v.s. 介面
 
@@ -64,15 +67,17 @@ YubiKey 其中一個讓人混淆的，是有很多應用協定，也有很多的
 
 # 應用協定 / Application
 
-YubiKey 上的應用協定大致有六種，分別是 OTP, FIDO U2F, FIDO2, OATH, Smart Card, OpenPGP。
+YubiKey 上的應用協定大致有六種，分別是 OTP, FIDO U2F, FIDO2, OATH, Smart Card, OpenPGP。後兩者暫時不會介紹，因為我也還沒玩 XD。
 
 ## OTP / One-time-password 應用
 
-（「OTP」在 YubiKey 文件中不斷出現，此處指的是非常特定的用法，即「當 YubiKey 以 USB-A/USB-C 連接到裝置，變成一份虛擬鍵盤，按下 YubiKey，它會輸出一串隨機碼」，以下稱「OTP 應用」。請小心區分其他處出現的「OTP」，嘗試以上下文了解其意義。）
+「OTP」在 YubiKey 文件中不斷出現，此處指的是非常特定的用法，即「當 YubiKey 以 USB-A/USB-C 連接到裝置，變成一份虛擬鍵盤，按下 YubiKey，它會輸出一串碼」，以下稱「OTP 應用」。請小心區分其他處出現的「OTP」，嘗試以上下文了解其意義。
 
 ### 使用情境
 
 登入時，輸入帳號密碼後，應用程式或瀏覽器會再出現一組輸入框，要求使用者插入並按下 security key 後，產生一次性的密碼。
+
+若 OTP 應用是設定為 Static password，使用者按下後則是輸入設定好的密碼。**不建議使用，因為當 YubiKey 變成虛擬鍵盤時，可以在任何輸入框輸入你的密碼，只要一個簡單的誤觸，你的密碼就可能以 Line/Messenger/Whatsapp/Slack 的方式傳給別人。**
 
 ### 設定
 
@@ -119,7 +124,7 @@ TODO: 圖
 
 ### 使用情境
 
-登入時，輸入帳號密碼後，應用程式或瀏覽器會再出現一個輸入框，要求使用者輸入一組 6 位數字。使用者使用 Yubico Authenticator 讀取 YubiKey 後，在欲登入網站填入 Yubico Authenticator 顯示的 5 位數字以登入。
+登入時，輸入帳號密碼後，應用程式或瀏覽器會再出現一個輸入框，要求使用者輸入一組 6 位數字。使用者使用 Yubico Authenticator 讀取 YubiKey 後，在欲登入網站填入 Yubico Authenticator 顯示的 6 位數字以登入。
 
 有趣的是，在這過程中，Yubico Authenticator 只負責提供時間給 YubiKey (TOTP)，接著顯示 YubiKey 回傳的值，Yubico Authenticator 本身不負責運算/儲存。所以如果手機掉了，別的手機還是可以讀 YubiKey。
 
