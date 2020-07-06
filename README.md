@@ -51,19 +51,17 @@ YubiKey 其中一個讓人混淆的，是有很多應用協定，也有很多的
 - 透過 Lighting 使用 FIDO U2F
 - 透過 Lighting 使用 OTP
 
-但並不是所有的排列組合都是存在的，例如「OTP 應用」<sup>*1</sup> 就無法透過 NFC 使用。
-
 *1 「OTP 應用」：詳細定義請見下文。
 
 # 介面 / Interface
 
 | 產品 \ 支援介面 | USB-A | USB-C | Lightning | NFC |
 |:-------------:|:-----:|:-----:|:---------:|:---:|
-| 5 NFC         | ✓     |       |           | ✓   |
-| 5 Nano        | ✓     |       |           |     |
-| 5C            |       | ✓     |           |     |
-| 5Ci           |       | ✓     | ✓         |     |
-| 5C Nano       |       | ✓     |           |     |
+| 5 NFC         |   ✓   |       |           |  ✓  |
+| 5 Nano        |   ✓   |       |           |     |
+| 5C            |       |   ✓   |           |     |
+| 5Ci           |       |   ✓   |     ✓     |     |
+| 5C Nano       |       |   ✓   |           |     |
 
 # 應用協定 / Application
 
@@ -86,9 +84,11 @@ OTP 應用有 slot 1 / slot 2 兩組設定，短按 YubiKey 會輸出 slot 1，�
 每一個 slot 都可以設定怎麼產生隨機碼，有以下的幾種規則
 
 - Yubico OTP：slot 1 出廠預設，常用在二階段認證。長度為 44 個字母，前 12 個字母代表該 YubiKey，所以是固定的；後 32 個字母則是每次都不同。
+  - 透過 NFC 時，OTP 永遠只輸出 slot 1。
 - OATH-HOTP：常用在二階段認證。以 RFC 4226 定義的的演算法，產生的 6 位數字。OATH-HOTP 晚點會再出現，這裡看不懂請再往下看。
-- Static Password：就是一組密碼，基本上就是把密碼存在硬體 security key 裡面。因為是固定的，所以不會用在二階段驗證。
+- Static Password：基本上就是把密碼存在硬體 security key 裡面。因為是固定的，所以不會用在二階段驗證。
   - 此設定就是一般的密碼輸入，非二階段認證。
+  - **不建議使用，因為當 YubiKey 變成虛擬鍵盤時，可以在任何輸入框輸入你的密碼，只要一個簡單的誤觸，你的密碼就可能以 Line/Messenger/Whatsapp/Slack 的方式傳給別人。**
   
 設定 OTP 應用的各個 slot 需透過 [YubiKey Manager](https://support.yubico.com/support/solutions/articles/15000014219-yubikey-5-series-technical-manual#YubiKey_Manager38ncjm)，各大桌面平台都有 GUI app，有些也有 CLI。
 
@@ -155,6 +155,10 @@ OATH 有 32 個 slots，至多可以存 32 個二階段驗證，在越來越多�
 一個常見問題就是要怎麽備份 YubiKey：**YubiKey 沒辦法備份。** 請把它當作車鑰匙/家門鑰匙來對待，所以你怎麼備份車鑰匙，就怎麼備份 YubiKey。
 
 我目前的方式就是買 2 把 YubiKey，所有二階段驗證的網站都要註冊 2 把，無論是 FIDO U2F 或者是 OATH。
+
+## Yubico OTP
+
+直接把兩把 YubiKey 都註冊進該服務，例如 Lastpass 就有支援 Yubico OTP。（竟然不支援 FIDO U2F，可惡）
 
 ## FIDO U2F
 
